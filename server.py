@@ -1,6 +1,6 @@
 #Server
+import subprocess 
 from flask import Flask, request # 서버 구현을 위한 falsk 객체 import
-from flask_restx import Api # Api 구현을 위한 Api 객체 import
 import jsonpickle
 import cv2
 import pymysql
@@ -25,16 +25,16 @@ def upload_files():
         path = os.path.join('tt22/', fname)
         f.save(path)
 
-        #print(temp)
-        os.system('python detect.py --weights ./runs/exp6_yolov4-csp-results/weights/best_yolov4-csp-results.pt --img 2448 --conf 0.4 --source tt22/ --device 2') # detect
+        #os.system('python detect.py --weights ./runs/exp6_yolov4-csp-results/weights/best_yolov4-csp-results.pt --img 2448 --conf 0.4 --source tt22/ --device 2') # detect
+        data = subprocess.check_output(['python', 'detect.py', '--weights', './runs/exp6_yolov4-csp-results/weights/best_yolov4-csp-results.pt', '--img', '2448', '--conf', '0.4', '--source', 'tt22/', '--device', '2' ]) 
         
         input_FilePath = 'tt22'
         if os.path.exists(input_FilePath):
             for file in os.scandir(input_FilePath):
                 os.remove(file.path)
 
-        return 'File upload complete (%s)' % path
-
+        return data
+       
 @app.route('/csv_file_download_with_file')
 def csv_file_download_with_file():
     file_name = temp
