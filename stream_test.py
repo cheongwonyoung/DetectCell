@@ -7,9 +7,6 @@ import requests
 import cv2
 import base64
 
-#st.text("text") # text print
-#st.write("text")
-
 @st.cache # 변경 사항을 감지하기 위해
 def load_image(img):
     im = Image.open(img)
@@ -40,7 +37,7 @@ def main():
                 st.image(img)
 
 
-                if st.button("Detect The Cell"):  # Detect 버튼 생성
+                if st.button("Detect Cells"):  # Detect 버튼 생성
                     # save to /tt22
                     with open(os.path.join("../../tt22", image_file.name), "wb") as f:
                         f.write(image_file.getbuffer())
@@ -51,7 +48,7 @@ def main():
                     files = open(os.path.join("../../tt22", image_file.name), 'rb')
                     upload = {'file': files}
                     ress = requests.post('http://210.115.242.180:1212/file_upload', files=upload)
-                    #st.write(ress)
+                    st.write(ress.content)
 
                     # from server
                     res = requests.get('http://210.115.242.180:1212/csv_file_download_with_file')
@@ -63,35 +60,34 @@ def main():
                     img = cv2.imdecode(jpg_arr, cv2.IMREAD_COLOR)
                     st.image(img)
 
-
-
         if enhance_type == 'Folder':
             multi_file = st.file_uploader("Upload Multi Image", type=['jpg', 'png', 'jpeg'], accept_multiple_files=True)
             if multi_file is not None:
-                for image_file in multi_file:
-                    bytes_data = image_file.read()
-                    st.write("filename:", image_file)
-                    st.image(bytes_data)
+                if st.button("Detect Cells"):  # Detect 버튼 생성
+                    for i, image_file in enumerate(multi_file):
+                        bytes_data = image_file.read()
+                        st.success("======================== "+ str(i+1) +" image ============================")
+                        st.image(bytes_data)
 
-                    with open(os.path.join("../../tt22", image_file.name), "wb") as f:
-                        f.write(image_file.getbuffer())
-                    st.success("Saved File")
-                    st.success("Wait Please...")
+                        with open(os.path.join("../../tt22", image_file.name), "wb") as f:
+                            f.write(image_file.getbuffer())
+                        st.success("Saved File")
+                        st.success("Wait Please...")
 
-                    files = open(os.path.join("../../tt22", image_file.name), 'rb')
-                    upload = {'file': files}
-                    ress = requests.post('http://210.115.242.180:1212/file_upload', files=upload)
-                    #st.write(ress)
+                        files = open(os.path.join("../../tt22", image_file.name), 'rb')
+                        upload = {'file': files}
+                        ress = requests.post('http://210.115.242.180:1212/file_upload', files=upload)
+                        st.write(ress.content)
 
-                    res = requests.get('http://210.115.242.180:1212/csv_file_download_with_file')
-                    res = res.content.decode('utf-8')
-                    res = eval(res)
-                    img = res['img']
-                    img = base64.b64decode(img)
-                    jpg_arr = np.frombuffer(img, dtype=np.uint8)
-                    img = cv2.imdecode(jpg_arr, cv2.IMREAD_COLOR)
+                        res = requests.get('http://210.115.242.180:1212/csv_file_download_with_file')
+                        res = res.content.decode('utf-8')
+                        res = eval(res)
+                        img = res['img']
+                        img = base64.b64decode(img)
+                        jpg_arr = np.frombuffer(img, dtype=np.uint8)
+                        img = cv2.imdecode(jpg_arr, cv2.IMREAD_COLOR)
 
-                    st.image(img)
+                        st.image(img)
 
 if __name__ == '__main__':
         main()
