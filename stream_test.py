@@ -31,13 +31,11 @@ def main():
         if enhance_type == 'File':
             image_file = st.file_uploader("Upload Image", type=['jpg', 'png', 'jpeg'])  # 세가지 종류 타입 이미지 업로드 가능
             if image_file is not None:
-
-                # show input image
-                img = load_image(image_file)
-                st.image(img)
-
-
                 if st.button("Detect Cells"):  # Detect 버튼 생성
+                    # show input image
+                    img = load_image(image_file)
+                    st.image(img)
+
                     # save to /tt22
                     with open(os.path.join("../../tt22", image_file.name), "wb") as f:
                         f.write(image_file.getbuffer())
