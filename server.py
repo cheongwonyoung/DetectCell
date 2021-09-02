@@ -20,6 +20,7 @@ def upload_data():
        global conf
        global iou
        params = json.loads(request.get_data(),encoding='utf-8')
+       #json.loads is str->dict
        conf = str(params['conf'])
        iou = str(params['iou'])
 
@@ -37,7 +38,7 @@ def upload_files():
         temp = temp + f.filename
         fname = secure_filename(f.filename)
         path = os.path.join('tt22/', fname)
-        f.save(path)
+        f.save(path) # 경로에 파일 저장
 
         #os.system('python detect.py --weights ./runs/exp6_yolov4-csp-results/weights/best_yolov4-csp-results.pt --img 2448 --conf 0.4 --source tt22/ --device 2') # detect
         data = subprocess.check_output(['python', 'detect.py', '--weights', './runs/exp6_yolov4-csp-results/weights/best_yolov4-csp-results.pt', '--img', '2448', '--conf', conf, '--iou', iou, '--source', 'tt22/', '--device', '0' ]) 
