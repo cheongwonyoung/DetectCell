@@ -16,15 +16,15 @@ def load_image(img):
 def main():
     """Cell Detection App"""
 
-    st.title("Cell Detection App") # 글 작성
-    st.text("Build with Streamlit and OpenCV") # 글 작성
+    st.title("Splenocyte Cell Counting WEB-APP") # 글 작성
+    st.text("Build with Streamlit and OpenCV by WY Jung and SJ Park (School of Software, Hallym University") # 글 작성
 
-    activities = ["Detection"] # 선택지
+    activities = ["Splenocyte Count"] # 선택지
     choice = st.sidebar.selectbox("Select Activity", activities) # 선택지 넣어 사이드 셀렉박스 만들기
 
     ttss.reset() # 폴더 초기화
 
-    if choice == 'Detection': # 셀렉박스가 'Detection'일때
+    if choice == 'Counting': # 셀렉박스가 'Detection'일때
 
         # slider in sidebar
         #conf_thres = st.sidebar.slider("conf_thres", value=0.4, min_value=0.0, max_value=1.0, step=0.1)
