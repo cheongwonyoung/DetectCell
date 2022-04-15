@@ -22,7 +22,7 @@ def main():
     activities = ["Splenocyte Count"] # 선택지
     choice = st.sidebar.selectbox("Select Activity", activities) # 선택지 넣어 사이드 셀렉박스 만들기
 
-    ttss.reset() # 폴더 초기화
+    floder_reset.reset() # 폴더 초기화
 
     if choice == 'Counting': # 셀렉박스가 'Detection'일때
 
